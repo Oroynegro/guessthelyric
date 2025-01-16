@@ -1,52 +1,65 @@
-async function getAccessToken() {
-    try {
-        const response = await fetch("/api/getAccessToken");
-        const data = await response.json();
-        return data.access_token;
-    } catch (error) {
-        console.error("Error al obtener el token:", error);
-        return null;
-    }
+const palabras = ['amor', 'vida', 'corazón', 'tiempo', 'noche', 'día', 'cielo', 'mar'];
+const startButton = document.getElementById('startButton');
+const wordDisplay = document.getElementById('wordDisplay');
+const lyricsInput = document.getElementById('lyricsInput');
+const checkButton = document.getElementById('checkButton');
+const loading = document.getElementById('loading');
+const result = document.getElementById('result');
+
+let currentWord = '';
+
+startButton.addEventListener('click', generateRandomWord);
+checkButton.addEventListener('click', checkLyrics);
+
+function generateRandomWord() {
+    currentWord = palabras[Math.floor(Math.random() * palabras.length)];
+    wordDisplay.textContent = `Palabra: ${currentWord}`;
+    lyricsInput.style.display = 'block';
+    checkButton.style.display = 'block';
+    startButton.textContent = 'Nueva Palabra';
+    result.style.display = 'none';
+    lyricsInput.value = '';
 }
 
-async function searchLyrics(lyricFragment) {
-    const token = await getAccessToken();
-    if (!token) {
-        document.getElementById("result").textContent = "Error: Unable to fetch access token.";
+async function checkLyrics() {
+    const lyrics = lyricsInput.value.trim();
+    
+    if (lyrics.split(' ').length < 3) {
+        showResult('Por favor ingresa al menos 3 palabras', false);
         return;
     }
 
+    loading.style.display = 'block';
+    checkButton.disabled = true;
+
     try {
-        const response = await fetch(`https://api.genius.com/search?q=${encodeURIComponent(lyricFragment)}`, {
+        const response = await fetch('/api/check-lyrics', {
+            method: 'POST',
             headers: {
-                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
             },
+            body: JSON.stringify({ lyrics }),
         });
 
         const data = await response.json();
-
-        if (data.response.hits.length > 0) {
-            const song = data.response.hits[0].result;
-            document.getElementById("result").innerHTML = `Correct! The song is <strong>${song.full_title}</strong>.`;
+        
+        if (data.exists) {
+            showResult(`¡Correcto! 
+                Canción: ${data.title}
+                Artista: ${data.artist}`, true);
         } else {
-            document.getElementById("result").textContent = "No matching lyrics found.";
+            showResult('No se encontró una canción con esa letra exacta.', false);
         }
     } catch (error) {
-        console.error("Error searching for lyrics:", error);
-        document.getElementById("result").textContent = "An error occurred while searching for lyrics.";
+        showResult('Error al verificar la letra. Intenta nuevamente.', false);
+    } finally {
+        loading.style.display = 'none';
+        checkButton.disabled = false;
     }
 }
 
-document.getElementById("submit-button").addEventListener("click", () => {
-    const lyricInput = document.getElementById("lyric-input").value.trim();
-    if (lyricInput.split(" ").length < 4) {
-        document.getElementById("result").textContent = "Your input must contain at least 4 words.";
-    } else {
-        searchLyrics(lyricInput);
-    }
-});
-
-// Set random word
-const randomWords = ["strange", "love", "dream", "fire", "light"];
-const randomWord = randomWords[Math.floor(Math.random() * randomWords.length)];
-document.getElementById("random-word").textContent = randomWord;
+function showResult(message, isSuccess) {
+    result.textContent = message;
+    result.style.display = 'block';
+    result.className = `result ${isSuccess ? 'success' : 'error'}`;
+}

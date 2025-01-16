@@ -1,24 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guess the Lyric</title>
+    <title>Juego de Letras de Canciones</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="game-container">
-        <h1>GUESS THE LYRIC</h1>
-        <p>THE WORD IS:</p>
-        <div id="word-container">
-            <span id="random-word">Loading...</span>
+    <div class="container">
+        <h1>Juego de Letras de Canciones</h1>
+        
+        <div class="game-section">
+            <button id="startButton">Comenzar Juego</button>
+            <div id="wordDisplay" class="word-display"></div>
+            <textarea id="lyricsInput" placeholder="Escribe aquí la letra de la canción (mínimo 3 palabras)..." style="display: none;"></textarea>
+            <button id="checkButton" style="display: none;">Verificar Letra</button>
+            <div id="loading" class="loading">Verificando...</div>
+            <div id="result" class="result"></div>
         </div>
-        <div>
-            <input type="text" id="lyric-input" placeholder="Input" />
-            <button id="submit-button">SUBMIT</button>
-        </div>
-        <div id="result"></div>
     </div>
 
-<script src="main.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
