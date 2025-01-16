@@ -76,9 +76,38 @@ async function checkLyrics() {
     }
 }
 
-function showResult(message, isSuccess) {
-    result.textContent = message;
-    result.style.display = 'block';
-    result.className = `result ${isSuccess ? 'success' : 'error'}`;
+function showResult(message, data, isSuccess) {
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = ''; // Limpiar contenido previo
+    
+    // Título y artista
+    const headerDiv = document.createElement('div');
+    headerDiv.className = 'mb-4';
+    
+    if (data && data.exists && data.verified) {
+        headerDiv.innerHTML = `
+            <h3 class="font-bold">¡Correcto! Letra verificada</h3>
+            <p>Canción: ${data.title}</p>
+            <p>Artista: ${data.artist}</p>
+        `;
+        
+        // Crear el div para la previsualización
+        const previewDiv = document.createElement('div');
+        previewDiv.className = 'mt-4 p-4 bg-gray-100 rounded';
+        
+        const versePreview = document.createElement('p');
+        versePreview.className = 'font-mono';
+        versePreview.textContent = '...'; // Indicador de que es un extracto
+        versePreview.style.whiteSpace = 'pre-line';
+        
+        previewDiv.appendChild(versePreview);
+        resultDiv.appendChild(headerDiv);
+        resultDiv.appendChild(previewDiv);
+    } else {
+        headerDiv.textContent = message;
+        resultDiv.appendChild(headerDiv);
+    }
+    
+    resultDiv.style.display = 'block';
+    resultDiv.className = `result ${isSuccess ? 'success' : 'error'}`;
 }
-
