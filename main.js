@@ -38,7 +38,7 @@ async function checkLyrics() {
     checkButton.disabled = true;
 
     try {
-        const response = await fetch('https://<tu-proyecto>.vercel.app/api/check-lyrics', {
+        const response = await fetch('https://guessthelyric.vercel.app/api/check-lyrics', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
