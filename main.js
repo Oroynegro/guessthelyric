@@ -84,7 +84,7 @@ function showResult(message, isSuccess, data) {
             <h3 class="lyricVerification">¡Correcto! Letra verificada</h3>
             <span class="titleSong">${data.title}</span>
             <span class="artistSong">${data.artist}</span>
-            <span class="stanzaSong">${data.stanza}</span>
+            <div class="stanzaSong">${data.stanza.replace(/\n/g, '<br>')}</div>
         `;
     } else if (data && data.exists) {
         result.innerHTML = `
@@ -99,5 +99,6 @@ function showResult(message, isSuccess, data) {
 
     result.style.display = 'block';
 }
+
 
 

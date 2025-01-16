@@ -71,8 +71,9 @@ export default async function handler(req, res) {
                     verified: true,
                     title: song.title,
                     artist: song.primary_artist.name,
-                    stanza,
+                    stanza: fullLyrics.substring(contextStart, contextEnd) // Incluye el contexto con saltos de línea
                 });
+                
             }
             
             
