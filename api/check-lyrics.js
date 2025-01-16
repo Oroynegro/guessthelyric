@@ -16,7 +16,7 @@ export default async function handler(req, res) {
     }
 
     const { lyrics } = req.body;
-    const GENIUS_API_KEY = process.env.GENIUS_API_KEY;
+    const GENIUS_ACCESS_TOKEN = process.env.GENIUS_ACCESS_TOKEN;
 
     if (!lyrics || lyrics.trim().length === 0) {
         return res.status(400).json({ message: 'Letra no proporcionada' });
@@ -28,7 +28,7 @@ export default async function handler(req, res) {
             `https://api.genius.com/search?q=${query}`,
             {
                 headers: {
-                    Authorization: `Bearer ${GENIUS_API_KEY}`,
+                    Authorization: `Bearer ${GENIUS_ACCESS_TOKEN}`,
                 },
             }
         );
