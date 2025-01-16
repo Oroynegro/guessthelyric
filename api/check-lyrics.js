@@ -1,12 +1,23 @@
 import fetch from 'node-fetch';
-import cheerio from 'cheerio'; // Librería para scraping
+import cheerio from 'cheerio';
 
 async function getLyricsFromUrl(url) {
     try {
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            },
+        });
         const html = await response.text();
         const $ = cheerio.load(html);
-        const lyrics = $('.Lyrics__Container-sc-1ynbvzw-6').text(); // Selector CSS para letras en Genius
+
+        // Obtener todos los fragmentos de letras y unirlos
+        const lyrics = $('.Lyrics__Container-sc-1ynbvzw-6')
+            .map((i, el) => $(el).text())
+            .get()
+            .join('\n');
+
+        console.log('Letra obtenida:', lyrics); // Debug
         return lyrics || null;
     } catch (error) {
         console.error('Error al obtener la letra:', error);
