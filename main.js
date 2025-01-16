@@ -6,8 +6,12 @@ const checkButton = document.getElementById('checkButton');
 const loading = document.getElementById('loading');
 const result = document.getElementById('result');
 
+// Reemplaza esto con tu token de acceso de Genius
+const GENIUS_ACCESS_TOKEN = 'TU_TOKEN_DE_GENIUS';
+const GENIUS_API_BASE = 'https://api.genius.com';
+const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
+
 let currentWord = '';
-let lastVerifiedLyrics = '';
 
 startButton.addEventListener('click', generateRandomWord);
 checkButton.addEventListener('click', checkLyrics);
@@ -20,31 +24,57 @@ function generateRandomWord() {
     startButton.textContent = 'Nueva Palabra';
     result.style.display = 'none';
     lyricsInput.value = '';
-    lastVerifiedLyrics = '';
 }
 
 function normalizeText(text) {
     return text
         .toLowerCase()
         .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "") // Elimina acentos
-        .replace(/[.,!?¡¿]/g, "") // Elimina puntuación
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[.,!?¡¿]/g, "")
         .trim();
 }
 
+async function searchSong(lyrics) {
+    const searchQuery = encodeURIComponent(lyrics);
+    const response = await fetch(`${GENIUS_API_BASE}/search?q=${searchQuery}`, {
+        headers: {
+            'Authorization': `Bearer ${GENIUS_ACCESS_TOKEN}`
+        }
+    });
+    const data = await response.json();
+    return data.response.hits;
+}
+
+async function getLyrics(url) {
+    try {
+        const response = await fetch(`${CORS_PROXY}${url}`);
+        const html = await response.text();
+        // Aquí necesitarás extraer las letras del HTML dependiendo de la estructura de la página
+        // Este es un ejemplo simple, podrías necesitar ajustarlo
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const lyricsElement = doc.querySelector('.lyrics') || doc.querySelector('[class^="Lyrics__Container"]');
+        return lyricsElement ? lyricsElement.textContent.trim() : '';
+    } catch (error) {
+        console.error('Error al obtener las letras:', error);
+        return '';
+    }
+}
+
 async function checkLyrics() {
-    const lyrics = lyricsInput.value.trim();
-    const words = lyrics.split(/\s+/);
+    const userInput = lyricsInput.value.trim();
+    const words = userInput.split(/\s+/);
 
     if (words.length < 3) {
         showResult('Por favor ingresa al menos 3 palabras', false);
         return;
     }
 
-    const normalizedLyrics = normalizeText(lyrics);
+    const normalizedInput = normalizeText(userInput);
     const normalizedWord = normalizeText(currentWord);
 
-    if (!normalizedLyrics.includes(normalizedWord)) {
+    if (!normalizedInput.includes(normalizedWord)) {
         showResult(`La palabra "${currentWord}" no está presente en tu texto.`, false);
         return;
     }
@@ -53,32 +83,22 @@ async function checkLyrics() {
     checkButton.disabled = true;
 
     try {
-        const response = await fetch('/api/check-lyrics', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 
-                lyrics,
-                word: currentWord,
-                // Añadimos parámetros adicionales para la verificación en el backend
-                normalizedLyrics,
-                normalizedWord
-            }),
-        });
+        const searchResults = await searchSong(userInput);
+        
+        for (const hit of searchResults) {
+            const songUrl = hit.result.url;
+            const fullLyrics = await getLyrics(songUrl);
+            const normalizedLyrics = normalizeText(fullLyrics);
 
-        const data = await response.json();
-
-        if (data.exists && data.exactMatch) {
-            lastVerifiedLyrics = lyrics;
-            showResult(`¡Correcto! 
-                Canción: ${data.title}
-                Artista: ${data.artist}`, true);
-        } else if (data.exists && !data.exactMatch) {
-            showResult('La letra es similar pero no exacta. Por favor, verifica que sea la letra correcta.', false);
-        } else {
-            showResult('No se encontró una canción con esa letra exacta.', false);
+            if (normalizedLyrics.includes(normalizedInput)) {
+                showResult(`¡Correcto! 
+                    Canción: ${hit.result.title}
+                    Artista: ${hit.result.primary_artist.name}`, true);
+                return;
+            }
         }
+
+        showResult('No se encontró una canción con esa letra exacta.', false);
     } catch (error) {
         console.error('Error:', error);
         showResult('Error al verificar la letra. Intenta nuevamente.', false);
