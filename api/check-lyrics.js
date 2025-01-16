@@ -1,6 +1,5 @@
 // check-lyrics.js
 import fetch from 'node-fetch';
-import cheerio from 'cheerio';
 
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -16,23 +15,12 @@ export default async function handler(req, res) {
     }
 
     const { lyrics } = req.body;
-
-    if (!lyrics || lyrics.trim().length === 0) {
-        return res.status(400).json({ message: 'Letra no proporcionada' });
-    }
+    const GENIUS_ACCESS_TOKEN = process.env.GENIUS_ACCESS_TOKEN;
 
     try {
-        // Validación del token de acceso
-        const GENIUS_ACCESS_TOKEN = process.env.GENIUS_ACCESS_TOKEN;
-        if (!GENIUS_ACCESS_TOKEN) {
-            console.error('Token de acceso no configurado');
-            return res.status(500).json({ message: 'Error de configuración del servidor' });
-        }
-
-        // Búsqueda en Genius con manejo de errores
-        const query = encodeURIComponent(lyrics);
+        // 1. Primero buscar en Genius para obtener el artista y título
         const searchResponse = await fetch(
-            `https://api.genius.com/search?q=${query}`,
+            `https://api.genius.com/search?q=${encodeURIComponent(lyrics)}`,
             {
                 headers: {
                     Authorization: `Bearer ${GENIUS_ACCESS_TOKEN}`,
@@ -40,37 +28,59 @@ export default async function handler(req, res) {
             }
         );
 
-        if (!searchResponse.ok) {
-            console.error('Error en la respuesta de Genius:', await searchResponse.text());
-            return res.status(502).json({ message: 'Error al conectar con Genius' });
-        }
-
         const data = await searchResponse.json();
         
-        if (!data.response || !data.response.hits || data.response.hits.length === 0) {
+        if (data.response.hits.length === 0) {
             return res.status(200).json({ exists: false });
         }
 
         const song = data.response.hits[0].result;
         
-        // En lugar de hacer web scraping, vamos a confiar en la búsqueda inicial
-        // y hacer una comparación más flexible
-        const songTitle = song.title.toLowerCase();
-        const artistName = song.primary_artist.name.toLowerCase();
-        const fullSongInfo = `${songTitle} ${artistName}`;
+        // 2. Usar lyrics.ovh para obtener la letra completa
+        const lyricsResponse = await fetch(
+            `https://api.lyrics.ovh/v1/${encodeURIComponent(song.primary_artist.name)}/${encodeURIComponent(song.title)}`
+        );
+
+        if (!lyricsResponse.ok) {
+            // Si no se encuentra en lyrics.ovh, retornamos el resultado de Genius
+            return res.status(200).json({
+                exists: true,
+                verified: false,
+                title: song.title,
+                artist: song.primary_artist.name,
+                source: 'Genius (sin verificación exacta)'
+            });
+        }
+
+        const lyricsData = await lyricsResponse.json();
         
-        // Si la búsqueda devuelve un resultado, consideramos que es una coincidencia válida
+        if (lyricsData.lyrics) {
+            // Normalizar ambas cadenas para comparación
+            const fullLyrics = lyricsData.lyrics.toLowerCase().replace(/\r/g, '');
+            const userLyrics = lyrics.toLowerCase().trim();
+
+            // Verificar si la frase del usuario está en las letras
+            if (fullLyrics.includes(userLyrics)) {
+                return res.status(200).json({
+                    exists: true,
+                    verified: true,
+                    title: song.title,
+                    artist: song.primary_artist.name,
+                    source: 'Verificado con lyrics.ovh'
+                });
+            }
+        }
+
+        // Si la letra exacta no se encontró
         return res.status(200).json({
-            exists: true,
-            title: song.title,
-            artist: song.primary_artist.name,
-            confidence: 'Posible coincidencia encontrada'
+            exists: false,
+            message: 'La letra proporcionada no coincide con la canción exacta'
         });
 
     } catch (error) {
-        console.error('Error detallado:', error);
+        console.error('Error:', error);
         return res.status(500).json({ 
-            message: 'Error interno del servidor',
+            message: 'Error al verificar la letra',
             detail: process.env.NODE_ENV === 'development' ? error.message : undefined
         });
     }

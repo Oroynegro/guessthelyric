@@ -54,14 +54,18 @@ async function checkLyrics() {
 
         const data = await response.json();
 
-        if (data.exists) {
-            showResult(`¡Posible coincidencia encontrada!\n
+        if (data.exists && data.verified) {
+            showResult(`¡Correcto! Letra verificada.\n
                 Canción: ${data.title}
                 Artista: ${data.artist}
-                
-                Nota: Esta es una coincidencia aproximada.`, true);
+                Fuente: ${data.source}`, true);
+        } else if (data.exists && !data.verified) {
+            showResult(`Se encontró una posible coincidencia, pero no se pudo verificar la letra exacta.\n
+                Canción: ${data.title}
+                Artista: ${data.artist}
+                ${data.message || ''}`, false);
         } else {
-            showResult('No se encontró una canción con esa letra.', false);
+            showResult('No se encontró una canción con esa letra exacta.', false);
         }
     } catch (error) {
         console.error('Error:', error);
@@ -78,11 +82,3 @@ function showResult(message, isSuccess) {
     result.className = `result ${isSuccess ? 'success' : 'error'}`;
 }
 
-
-
-
-function showResult(message, isSuccess) {
-    result.textContent = message;
-    result.style.display = 'block';
-    result.className = `result ${isSuccess ? 'success' : 'error'}`;
-}
