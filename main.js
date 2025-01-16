@@ -29,8 +29,7 @@ async function checkLyrics() {
         return;
     }
 
-    // Validación de la palabra en la letra, utilizando una expresión regular
-    const wordRegex = new RegExp(`\\b${currentWord}\\b`, 'i'); // \\b asegura que la palabra esté completa
+    const wordRegex = new RegExp(`\\b${currentWord}\\b`, 'i');
     if (!wordRegex.test(lyrics)) {
         showResult(`La palabra "${currentWord}" no está presente correctamente en tu texto.`, false);
         return;
@@ -45,7 +44,7 @@ async function checkLyrics() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ lyrics }),
+            body: JSON.stringify({ lyrics, word: currentWord }),
         });
 
         const data = await response.json();
@@ -55,7 +54,7 @@ async function checkLyrics() {
                 Canción: ${data.title}
                 Artista: ${data.artist}`, true);
         } else {
-            showResult('No se encontró una canción con esa letra exacta.', false);
+            showResult(data.message || 'No se encontró una canción con esa letra exacta.', false);
         }
     } catch (error) {
         showResult('Error al verificar la letra. Intenta nuevamente.', false);
@@ -64,6 +63,7 @@ async function checkLyrics() {
         checkButton.disabled = false;
     }
 }
+
 
 
 
