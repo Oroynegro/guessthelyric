@@ -29,8 +29,10 @@ async function checkLyrics() {
         return;
     }
 
-    if (!lyrics.toLowerCase().includes(currentWord.toLowerCase())) {
-        showResult(`La palabra "${currentWord}" no está presente en tu texto.`, false);
+    // Validación de la palabra en la letra, utilizando una expresión regular
+    const wordRegex = new RegExp(`\\b${currentWord}\\b`, 'i'); // \\b asegura que la palabra esté completa
+    if (!wordRegex.test(lyrics)) {
+        showResult(`La palabra "${currentWord}" no está presente correctamente en tu texto.`, false);
         return;
     }
 
@@ -38,7 +40,7 @@ async function checkLyrics() {
     checkButton.disabled = true;
 
     try {
-        const response = await fetch('https://guessthelyric.vercel.app/api/check-lyrics', {
+        const response = await fetch('https://tu-proyecto.vercel.app/api/check-lyrics', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -62,6 +64,7 @@ async function checkLyrics() {
         checkButton.disabled = false;
     }
 }
+
 
 
 function showResult(message, isSuccess) {
