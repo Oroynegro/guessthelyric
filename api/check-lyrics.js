@@ -59,25 +59,23 @@ export default async function handler(req, res) {
             
             const index = fullLyrics.indexOf(userLyrics);
             if (index !== -1) {
-                // Encontrar el inicio del verso (buscar el salto de línea anterior)
                 let contextStart = fullLyrics.lastIndexOf('\n', index);
                 contextStart = contextStart === -1 ? index : contextStart + 1;
-                
-                // Encontrar el final del verso (buscar el próximo salto de línea)
                 let contextEnd = fullLyrics.indexOf('\n', index + userLyrics.length);
                 contextEnd = contextEnd === -1 ? index + userLyrics.length : contextEnd;
-                
+            
+                const context = fullLyrics.substring(contextStart, contextEnd).trim();
+            
                 return res.status(200).json({
                     exists: true,
                     verified: true,
                     title: song.title,
                     artist: song.primary_artist.name,
                     source: 'Verificado con lyrics.ovh',
-                    matchStart: contextStart,
-                    matchEnd: contextEnd,
-                    matchLength: userLyrics.length
+                    context,
                 });
             }
+            
         }
 
         // Si la letra exacta no se encontró

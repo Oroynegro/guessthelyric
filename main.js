@@ -1,4 +1,4 @@
-const palabras = ['dormir', "luna"];
+const palabras = ['dormir', "luna", "gustas"];
 const startButton = document.getElementById('startButton');
 const wordDisplay = document.getElementById('wordDisplay');
 const lyricsInput = document.getElementById('lyricsInput');
@@ -55,18 +55,16 @@ async function checkLyrics() {
         const data = await response.json();
 
         if (data.exists && data.verified) {
-            showResult(`¡Correcto! Letra verificada.\n
-                Canción: ${data.title}
-                Artista: ${data.artist}
-                Fuente: ${data.source}`, true);
+            showResult('¡Correcto! Letra verificada.', true, data);
         } else if (data.exists && !data.verified) {
-            showResult(`Se encontró una posible coincidencia, pero no se pudo verificar la letra exacta.\n
-                Canción: ${data.title}
-                Artista: ${data.artist}
-                ${data.message || ''}`, false);
+            showResult(
+                `Se encontró una posible coincidencia, pero no se pudo verificar la letra exacta.`,
+                false
+            );
         } else {
             showResult('No se encontró una canción con esa letra exacta.', false);
         }
+        
     } catch (error) {
         console.error('Error:', error);
         showResult('Error al verificar la letra. Por favor, intenta nuevamente en unos momentos.', false);
@@ -76,38 +74,22 @@ async function checkLyrics() {
     }
 }
 
-function showResult(message, data, isSuccess) {
-    const resultDiv = document.getElementById('result');
-    resultDiv.innerHTML = ''; // Limpiar contenido previo
+function showResult(message, isSuccess, data) {
+    result.innerHTML = ''; // Limpiar contenido previo
     
-    // Título y artista
-    const headerDiv = document.createElement('div');
-    headerDiv.className = 'mb-4';
-    
-    if (data && data.exists && data.verified) {
-        headerDiv.innerHTML = `
-            <h3 class="font-bold">¡Correcto! Letra verificada</h3>
+    if (isSuccess) {
+        result.innerHTML = `
+            <h3>¡Correcto! Letra verificada</h3>
             <p>Canción: ${data.title}</p>
             <p>Artista: ${data.artist}</p>
+            <p>Fuente: ${data.source}</p>
+            <h4>Fragmento:</h4>
+            <p style="font-style: italic; white-space: pre-line;">${data.context}</p>
         `;
-        
-        // Crear el div para la previsualización
-        const previewDiv = document.createElement('div');
-        previewDiv.className = 'mt-4 p-4 bg-gray-100 rounded';
-        
-        const versePreview = document.createElement('p');
-        versePreview.className = 'font-mono';
-        versePreview.textContent = '...'; // Indicador de que es un extracto
-        versePreview.style.whiteSpace = 'pre-line';
-        
-        previewDiv.appendChild(versePreview);
-        resultDiv.appendChild(headerDiv);
-        resultDiv.appendChild(previewDiv);
     } else {
-        headerDiv.textContent = message;
-        resultDiv.appendChild(headerDiv);
+        result.innerHTML = `<p>${message}</p>`;
     }
-    
-    resultDiv.style.display = 'block';
-    resultDiv.className = `result ${isSuccess ? 'success' : 'error'}`;
+
+    result.style.display = 'block';
 }
+
