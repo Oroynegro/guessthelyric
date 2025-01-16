@@ -53,19 +53,27 @@ export default async function handler(req, res) {
         const lyricsData = await lyricsResponse.json();
         
         if (lyricsData.lyrics) {
-            const fullLyrics = lyricsData.lyrics.toLowerCase();
-            const userLyrics = lyrics.toLowerCase().trim();
-            
+            const normalizeText = (text) =>
+                text.toLowerCase()
+                    .replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '') // Elimina puntuación
+                    .replace(/\s{2,}/g, ' ') // Reemplaza múltiples espacios por uno solo
+                    .trim();
+        
+            const fullLyrics = normalizeText(lyricsData.lyrics);
+            const userLyrics = normalizeText(lyrics);
+        
             const index = fullLyrics.indexOf(userLyrics);
             if (index !== -1) {
-                let lines = fullLyrics.split('\n');
-                let lineIndex = lines.findIndex(line => line.includes(lyrics.trim()));
-                
+                let lines = lyricsData.lyrics.split('\n'); // Sin normalización para extraer el texto original
+                let lineIndex = lines.findIndex(line => 
+                    normalizeText(line).includes(normalizeText(lyrics.trim()))
+                );
+        
                 let start = Math.max(0, lineIndex - 4); // Dos líneas antes
                 let end = Math.min(lines.length, lineIndex + 4); // Tres líneas después
-                
+        
                 const stanza = lines.slice(start, end).join('\n').trim();
-            
+        
                 return res.status(200).json({
                     exists: true,
                     verified: true,
@@ -73,8 +81,9 @@ export default async function handler(req, res) {
                     artist: song.primary_artist.name,
                     stanza,
                 });
-            } 
+            }
         }
+        
 
         // Si la letra exacta no se encontró
         return res.status(200).json({

@@ -22,8 +22,15 @@ function generateRandomWord() {
 }
 
 async function checkLyrics() {
-    const lyrics = lyricsInput.value.trim();
+    
+    const normalizeText = (text) =>
+        text.toLowerCase()
+            .replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '') // Elimina puntuación
+            .replace(/\s{2,}/g, ' ') // Reemplaza múltiples espacios
+            .trim();
 
+    const lyrics = normalizeText(lyricsInput.value.trim());
+    
     if (lyrics.split(' ').length < 3) {
         showResult('Por favor ingresa al menos 3 palabras', false);
         return;
