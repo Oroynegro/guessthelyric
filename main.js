@@ -9,7 +9,7 @@ const result = document.getElementById('result');
 // Configuración de la API
 const GENIUS_ACCESS_TOKEN = 'TU_TOKEN_DE_GENIUS';
 const GENIUS_API_BASE = 'https://api.genius.com';
-const CORS_PROXY = 'https://corsproxy.io/?' // Proxy CORS más confiable
+const CORS_PROXY = 'https://api.allorigins.win/raw?url='; // Proxy CORS más confiable
 
 let currentWord = '';
 
