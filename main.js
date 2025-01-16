@@ -82,15 +82,15 @@ function showResult(message, isSuccess, data) {
     if (isSuccess) {
         result.innerHTML = `
             <h3 class="lyricVerification">¡Correcto! Letra verificada</h3>
-            <p class="label-info">Canción: </p><span id="titleSong">${data.title}</span>
-            <p class="label-info">Artista: </p><span id="artistSong">${data.artist}</span>
-            <h4 class="label-info">Estrofa:</h4><span id="stanzaSong">${data.stanza}</span>
+            <span class="titleSong">${data.title}</span>
+            <span class="artistSong">${data.artist}</span>
+            <span class="stanzaSong">${data.stanza}</span>
         `;
     } else if (data && data.exists) {
         result.innerHTML = `
             <h3 class="lyricVerification">Posible coincidencia encontrada</h3>
-            <p class="label-info">Canción: </p><span id="titleSong">${data.title}</span>
-            <p class="label-info">Artista: </p><span id="artistSong">${data.artist}</span>
+            <span class="titleSong">${data.title}</span>
+            <span class="artistSong">${data.artist}</span>
             <p>${message}</p>
         `;
     } else {
