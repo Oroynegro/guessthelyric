@@ -83,8 +83,8 @@ function showResult(message, isSuccess, data) {
             <p>Canción: ${data.title}</p>
             <p>Artista: ${data.artist}</p>
             <p>Fuente: ${data.source}</p>
-            <h4>Fragmento:</h4>
-            <p style="font-style: italic; white-space: pre-line;">${data.context}</p>
+            <h4>Estrofa:</h4>
+            <p style="font-style: italic; white-space: pre-line;">${data.stanza}</p>
         `;
     } else {
         result.innerHTML = `<p>${message}</p>`;

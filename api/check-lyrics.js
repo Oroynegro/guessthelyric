@@ -59,12 +59,13 @@ export default async function handler(req, res) {
             
             const index = fullLyrics.indexOf(userLyrics);
             if (index !== -1) {
-                let contextStart = fullLyrics.lastIndexOf('\n', index);
-                contextStart = contextStart === -1 ? index : contextStart + 1;
-                let contextEnd = fullLyrics.indexOf('\n', index + userLyrics.length);
-                contextEnd = contextEnd === -1 ? index + userLyrics.length : contextEnd;
-            
-                const context = fullLyrics.substring(contextStart, contextEnd).trim();
+                let lines = fullLyrics.split('\n');
+                let lineIndex = lines.findIndex(line => line.includes(lyrics.trim()));
+                
+                let start = Math.max(0, lineIndex - 2); // Dos líneas antes
+                let end = Math.min(lines.length, lineIndex + 3); // Tres líneas después
+                
+                const stanza = lines.slice(start, end).join('\n').trim();
             
                 return res.status(200).json({
                     exists: true,
@@ -72,9 +73,11 @@ export default async function handler(req, res) {
                     title: song.title,
                     artist: song.primary_artist.name,
                     source: 'Verificado con lyrics.ovh',
-                    context,
+                    stanza,
                 });
             }
+            
+            
             
         }
 
