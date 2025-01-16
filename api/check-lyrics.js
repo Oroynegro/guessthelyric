@@ -1,61 +1,41 @@
-module.exports = async (req, res) => {
-  // Habilitar CORS
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
+import fetch from 'node-fetch';
 
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
-  }
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
-  }
-
-  const { lyrics } = req.body;
-
-  try {
-    // Buscar canciones que coincidan con la letra
-    const searchResponse = await fetch(
-      `https://api.genius.com/search?q=${encodeURIComponent(lyrics)}`, {
-      headers: {
-        'Authorization': `Bearer ${process.env.GENIUS_ACCESS_TOKEN}`
-      }
-    });
-
-    const searchData = await searchResponse.json();
-
-    if (!searchData.response.hits.length) {
-      return res.json({ exists: false });
+export default async function handler(req, res) {
+    if (req.method !== 'POST') {
+        return res.status(405).json({ message: 'Método no permitido' });
     }
 
-    // Obtener la primera coincidencia
-    const firstMatch = searchData.response.hits[0].result;
+    const { lyrics } = req.body;
+    const GENIUS_API_KEY = process.env.GENIUS_API_KEY;
 
-    // Obtener detalles de la canción
-    const songResponse = await fetch(
-      `https://api.genius.com/songs/${firstMatch.id}`, {
-      headers: {
-        'Authorization': `Bearer ${process.env.GENIUS_ACCESS_TOKEN}`
-      }
-    });
+    if (!lyrics || lyrics.trim().length === 0) {
+        return res.status(400).json({ message: 'Letra no proporcionada' });
+    }
 
-    const songData = await songResponse.json();
-    
-    return res.json({
-      exists: true,
-      title: firstMatch.title,
-      artist: firstMatch.primary_artist.name,
-      url: firstMatch.url
-    });
+    try {
+        const query = encodeURIComponent(lyrics);
+        const response = await fetch(
+            `https://api.genius.com/search?q=${query}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${GENIUS_API_KEY}`,
+                },
+            }
+        );
 
-  } catch (error) {
-    console.error('Error:', error);
-    return res.status(500).json({ message: 'Error checking lyrics' });
-  }
+        const data = await response.json();
+
+        if (data.response.hits.length > 0) {
+            const song = data.response.hits[0].result;
+            return res.status(200).json({
+                exists: true,
+                title: song.title,
+                artist: song.primary_artist.name,
+            });
+        }
+
+        return res.status(200).json({ exists: false });
+    } catch (error) {
+        return res.status(500).json({ message: 'Error interno del servidor' });
+    }
 }
