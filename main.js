@@ -80,10 +80,18 @@ function showResult(message, isSuccess, data) {
     result.innerHTML = ''; // Limpiar contenido previo
 
     if (isSuccess) {
-        // Reemplazar más de 2 <br> consecutivos por solo 2
-        const formattedStanza = data.stanza
+        // Limitar las palabras a un máximo de 40 si la letra está toda seguida
+        let formattedStanza = data.stanza
             .replace(/\n/g, '<br>') // Convertir saltos de línea a <br>
             .replace(/(<br>\s*){3,}/g, '<br><br>'); // Limitar a máximo 2 <br>
+
+        // Si no hay saltos de línea o <br>, limitar a 40 palabras
+        if (!formattedStanza.includes('<br>')) {
+            const words = formattedStanza.split(/\s+/); // Dividir en palabras
+            if (words.length > 40) {
+                formattedStanza = words.slice(0, 40).join(' ') + '...'; // Limitar a 40 palabras y añadir "..."
+            }
+        }
 
         result.innerHTML = `
             <h3 class="lyricVerification">¡Correcto! Letra verificada</h3>
@@ -102,7 +110,7 @@ function showResult(message, isSuccess, data) {
         result.innerHTML = `<p>${message}</p>`;
     }
 
-    result.style.display = 'block';
+    result.style.display = 'flex';
 }
 
 
