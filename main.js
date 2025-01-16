@@ -1,4 +1,4 @@
-const palabras = ['gone','fire', 'amor'];
+const palabras = ['amor', 'vida', 'corazón', 'tiempo', 'noche', 'día', 'cielo', 'mar'];
 const startButton = document.getElementById('startButton');
 const wordDisplay = document.getElementById('wordDisplay');
 const lyricsInput = document.getElementById('lyricsInput');
@@ -58,27 +58,8 @@ async function checkLyrics() {
     }
 }
 
-function showResult(data, isSuccess) {
+function showResult(message, isSuccess) {
+    result.textContent = message;
     result.style.display = 'block';
     result.className = `result ${isSuccess ? 'success' : 'error'}`;
-
-    if (isSuccess && data.exists) {
-        result.innerHTML = `
-            <div class="song-info">
-                <h3>¡Correcto!</h3>
-                <p><strong>Canción:</strong> ${data.title}</p>
-                <p><strong>Artista:</strong> ${data.artist}</p>
-                ${data.thumbnailUrl ? `<img src="${data.thumbnailUrl}" alt="Portada del álbum" class="song-thumbnail">` : ''}
-                <p><a href="${data.url}" target="_blank">Ver letra completa en Genius</a></p>
-            </div>
-        `;
-    } else {
-        result.textContent = '¡No se encontró una canción con esa letra exacta!';
-    }
 }
-
-
-// Agregar los estilos al documento
-const styleSheet = document.createElement("style");
-styleSheet.innerText = styles;
-document.head.appendChild(styleSheet);
