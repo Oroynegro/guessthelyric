@@ -1,4 +1,4 @@
-const palabras = ['amor', 'vida', 'corazón', 'tiempo', 'noche', 'día', 'cielo', 'mar'];
+const palabras = ['dormir', "luna"];
 const startButton = document.getElementById('startButton');
 const wordDisplay = document.getElementById('wordDisplay');
 const lyricsInput = document.getElementById('lyricsInput');
