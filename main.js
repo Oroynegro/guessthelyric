@@ -43,15 +43,17 @@ async function checkLyrics() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ lyrics }),
+            body: JSON.stringify({ lyrics, word: currentWord }),
         });
 
         const data = await response.json();
 
-        if (data.exists) {
+        if (data.exists && data.containsWord) {
             showResult(`¡Correcto! 
                 Canción: ${data.title}
                 Artista: ${data.artist}`, true);
+        } else if (data.exists) {
+            showResult(`La letra pertenece a una canción, pero no contiene la palabra "${currentWord}".`, false);
         } else {
             showResult('No se encontró una canción con esa letra exacta.', false);
         }
@@ -62,6 +64,7 @@ async function checkLyrics() {
         checkButton.disabled = false;
     }
 }
+
 
 function showResult(message, isSuccess) {
     result.textContent = message;
