@@ -96,3 +96,24 @@ textarea {
     margin: 10px 0;
     color: #666;
 }
+.song-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.song-thumbnail {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.song-info a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+.song-info a:hover {
+    text-decoration: underline;
+}
