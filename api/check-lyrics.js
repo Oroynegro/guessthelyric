@@ -59,20 +59,20 @@ export default async function handler(req, res) {
                     .replace(/\s{2,}/g, ' ') // Reemplaza múltiples espacios por uno solo
                     .trim();
         
-            const fullLyrics = normalizeText(lyricsData.lyrics);
-            const userLyrics = normalizeText(lyrics);
+            const fullLyrics = lyricsData.lyrics.split('\n'); // Divide las letras en líneas originales
+            const normalizedLyrics = normalizeText(lyricsData.lyrics); // Letra completa normalizada
+            const normalizedUserLyrics = normalizeText(lyrics); // Texto del usuario normalizado
         
-            const index = fullLyrics.indexOf(userLyrics);
-            if (index !== -1) {
-                let lines = lyricsData.lyrics.split('\n'); // Sin normalización para extraer el texto original
-                let lineIndex = lines.findIndex(line => 
-                    normalizeText(line).includes(normalizeText(lyrics.trim()))
-                );
+            // Busca la palabra en las líneas normalizadas
+            const matchingIndex = fullLyrics.findIndex(line => 
+                normalizeText(line).includes(normalizedUserLyrics)
+            );
         
-                let start = Math.max(0, lineIndex - 4); // Dos líneas antes
-                let end = Math.min(lines.length, lineIndex + 4); // Tres líneas después
+            if (matchingIndex !== -1) {
+                const start = Math.max(0, matchingIndex - 4); // Incluye hasta 4 líneas antes
+                const end = Math.min(fullLyrics.length, matchingIndex + 4); // Incluye hasta 4 líneas después
         
-                const stanza = lines.slice(start, end).join('\n').trim();
+                const stanza = fullLyrics.slice(start, end).join('\n').trim();
         
                 return res.status(200).json({
                     exists: true,
@@ -83,6 +83,7 @@ export default async function handler(req, res) {
                 });
             }
         }
+        
         
 
         // Si la letra exacta no se encontró
