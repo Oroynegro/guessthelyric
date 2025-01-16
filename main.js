@@ -78,13 +78,18 @@ async function checkLyrics() {
 
 function showResult(message, isSuccess, data) {
     result.innerHTML = ''; // Limpiar contenido previo
-    
+
     if (isSuccess) {
+        // Reemplazar más de 2 <br> consecutivos por solo 2
+        const formattedStanza = data.stanza
+            .replace(/\n/g, '<br>') // Convertir saltos de línea a <br>
+            .replace(/(<br>\s*){3,}/g, '<br><br>'); // Limitar a máximo 2 <br>
+
         result.innerHTML = `
             <h3 class="lyricVerification">¡Correcto! Letra verificada</h3>
             <span class="titleSong">${data.title}</span>
             <span class="artistSong">${data.artist}</span>
-            <div class="stanzaSong">${data.stanza.replace(/\n/g, '<br>')}</div>
+            <div class="stanzaSong">${formattedStanza}</div>
         `;
     } else if (data && data.exists) {
         result.innerHTML = `
@@ -99,6 +104,7 @@ function showResult(message, isSuccess, data) {
 
     result.style.display = 'block';
 }
+
 
 
 

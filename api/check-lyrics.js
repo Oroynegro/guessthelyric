@@ -73,10 +73,7 @@ export default async function handler(req, res) {
                     artist: song.primary_artist.name,
                     stanza,
                 });
-            }
-            
-            
-            
+            } 
         }
 
         // Si la letra exacta no se encontró
