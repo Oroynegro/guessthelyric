@@ -1,6 +1,7 @@
 {
+  "name": "lyrics-game",
+  "version": "1.0.0",
   "dependencies": {
-    "dotenv": "^16.4.7",
     "genius-lyrics-api": "^3.2.1"
   }
 }
