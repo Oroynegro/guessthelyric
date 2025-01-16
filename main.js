@@ -29,6 +29,7 @@ async function checkLyrics() {
         return;
     }
 
+    // Validación de la palabra en la letra
     const wordRegex = new RegExp(`\\b${currentWord}\\b`, 'i');
     if (!wordRegex.test(lyrics)) {
         showResult(`La palabra "${currentWord}" no está presente correctamente en tu texto.`, false);
@@ -44,24 +45,37 @@ async function checkLyrics() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ lyrics, word: currentWord }),
+            body: JSON.stringify({ lyrics }),
         });
+
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status}`);
+        }
 
         const data = await response.json();
 
         if (data.exists) {
-            showResult(`¡Correcto! 
+            showResult(`¡Posible coincidencia encontrada!\n
                 Canción: ${data.title}
-                Artista: ${data.artist}`, true);
+                Artista: ${data.artist}
+                
+                Nota: Esta es una coincidencia aproximada.`, true);
         } else {
-            showResult(data.message || 'No se encontró una canción con esa letra exacta.', false);
+            showResult('No se encontró una canción con esa letra.', false);
         }
     } catch (error) {
-        showResult('Error al verificar la letra. Intenta nuevamente.', false);
+        console.error('Error:', error);
+        showResult('Error al verificar la letra. Por favor, intenta nuevamente en unos momentos.', false);
     } finally {
         loading.style.display = 'none';
         checkButton.disabled = false;
     }
+}
+
+function showResult(message, isSuccess) {
+    result.textContent = message;
+    result.style.display = 'block';
+    result.className = `result ${isSuccess ? 'success' : 'error'}`;
 }
 
 
