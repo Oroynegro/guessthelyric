@@ -2,27 +2,27 @@ import fetch from 'node-fetch';
 import cheerio from 'cheerio';
 
 async function getLyricsFromUrl(url) {
-    try {
-        const response = await fetch(url, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-            },
-        });
-        const html = await response.text();
-        const $ = cheerio.load(html);
+  try {
+      const response = await fetch(url, {
+          headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+          },
+      });
+      const html = await response.text();
+      const $ = cheerio.load(html);
 
-        // Obtener todos los fragmentos de letras y unirlos
-        const lyrics = $('.Lyrics__Container-sc-1ynbvzw-6')
-            .map((i, el) => $(el).text())
-            .get()
-            .join('\n');
+      // Seleccionar el contenedor con data-lyrics-container="true"
+      const lyrics = $('[data-lyrics-container="true"]')
+          .map((i, el) => $(el).text())
+          .get()
+          .join('\n');
 
-        console.log('Letra obtenida:', lyrics); // Debug
-        return lyrics || null;
-    } catch (error) {
-        console.error('Error al obtener la letra:', error);
-        return null;
-    }
+      console.log('Letra obtenida:', lyrics); // Depuración
+      return lyrics || null;
+  } catch (error) {
+      console.error('Error al obtener la letra:', error);
+      return null;
+  }
 }
 
 export default async function handler(req, res) {
@@ -65,17 +65,18 @@ export default async function handler(req, res) {
             const fullLyrics = await getLyricsFromUrl(lyricsUrl);
 
             if (fullLyrics && new RegExp(`\\b${word}\\b`, 'i').test(fullLyrics)) {
-                return res.status(200).json({
-                    exists: true,
-                    title: song.title,
-                    artist: song.primary_artist.name,
-                });
-            }
-
-            return res.status(200).json({
-                exists: false,
-                message: `La palabra "${word}" no está presente en la letra completa de la canción.`,
-            });
+              return res.status(200).json({
+                  exists: true,
+                  title: song.title,
+                  artist: song.primary_artist.name,
+              });
+          }
+          
+          return res.status(200).json({
+              exists: false,
+              message: `La palabra "${word}" no está presente en la letra completa de la canción.`,
+          });
+          
         }
 
         return res.status(200).json({ exists: false });
