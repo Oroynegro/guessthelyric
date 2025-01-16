@@ -23,9 +23,14 @@ function generateRandomWord() {
 
 async function checkLyrics() {
     const lyrics = lyricsInput.value.trim();
-    
+
     if (lyrics.split(' ').length < 3) {
         showResult('Por favor ingresa al menos 3 palabras', false);
+        return;
+    }
+
+    if (!lyrics.toLowerCase().includes(currentWord.toLowerCase())) {
+        showResult(`La palabra "${currentWord}" no está presente en tu texto.`, false);
         return;
     }
 
@@ -42,7 +47,7 @@ async function checkLyrics() {
         });
 
         const data = await response.json();
-        
+
         if (data.exists) {
             showResult(`¡Correcto! 
                 Canción: ${data.title}

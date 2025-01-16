@@ -1,14 +1,39 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juego de Letras de Canciones</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+        name="description"
+        content="SCKAY: Un divertido juego para adivinar canciones y competir con tus amigos."
+    />
+    <meta name="author" content="Tu Nombre o Equipo" />
+    <meta
+        name="keywords"
+        content="juego, música, adivinar, canciones, diversión, competencia"
+    />
+
+    <title>SCKAY: Guess the lyric</title>
+
+    <!-- Ícono de la página -->
+    <link rel="icon" href="svg/points.svg" type="image/svg+xml" />
+
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap"
+        rel="stylesheet"
+    />
 </head>
 <body>
+    <div id="gameContainer">
+        <div class="game-header">
+            <h1 id="title">SCKAY</h1>
+            <h2 id="subtitle">GUESS THE LYRIC</h2>
+        </div>
+
     <div class="container">
-        <h1>Juego de Letras de Canciones</h1>
         
         <div class="game-section">
             <button id="startButton">Comenzar Juego</button>
@@ -19,6 +44,7 @@
             <div id="result" class="result"></div>
         </div>
     </div>
+</div>
 
     <script src="main.js"></script>
 </body>
