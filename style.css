@@ -4,6 +4,10 @@
     box-sizing: border-box;
     font-family: "Audiowide", serif;
 }
+.lyric-verification{
+    font-size: 2em;
+    text-align: center;
+}
 
 .titleSong{
     font-size: 1.8em;

@@ -1,4 +1,4 @@
-const palabras = ['dormir', "luna", "gustas"];
+const palabras = ["más"];
 const startButton = document.getElementById('startButton');
 const wordDisplay = document.getElementById('wordDisplay');
 const lyricsInput = document.getElementById('lyricsInput');
