@@ -8,13 +8,15 @@
 .titleSong{
     font-size: 1.8em;
     color: #1db954;
+    text-align: center;
 }
 .artistSong{
     font-size: 2em;
     color: #1db954;
+    text-align: center;
 }
 .stanzaSong{
-    font-size: 1.8em;
+    font-size: 1.6em;
     color: #1db954;
 }
 

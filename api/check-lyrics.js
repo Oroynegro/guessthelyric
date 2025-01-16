@@ -61,8 +61,8 @@ export default async function handler(req, res) {
                 let lines = fullLyrics.split('\n');
                 let lineIndex = lines.findIndex(line => line.includes(lyrics.trim()));
                 
-                let start = Math.max(0, lineIndex - 3); // Dos líneas antes
-                let end = Math.min(lines.length, lineIndex + 5); // Tres líneas después
+                let start = Math.max(0, lineIndex - 4); // Dos líneas antes
+                let end = Math.min(lines.length, lineIndex + 4); // Tres líneas después
                 
                 const stanza = lines.slice(start, end).join('\n').trim();
             
