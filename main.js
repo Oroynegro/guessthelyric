@@ -59,11 +59,13 @@ async function checkLyrics() {
         } else if (data.exists && !data.verified) {
             showResult(
                 `Se encontró una posible coincidencia, pero no se pudo verificar la letra exacta.`,
-                false
+                false,
+                data
             );
         } else {
             showResult('No se encontró una canción con esa letra exacta.', false);
         }
+        
         
     } catch (error) {
         console.error('Error:', error);
@@ -84,10 +86,18 @@ function showResult(message, isSuccess, data) {
             <p class="label-info">Artista: </p><span id="artistSong">${data.artist}</span>
             <h4 class="label-info">Estrofa:</h4><span id="stanzaSong">${data.stanza}</span>
         `;
+    } else if (data && data.exists) {
+        result.innerHTML = `
+            <h3 class="lyricVerification">Posible coincidencia encontrada</h3>
+            <p class="label-info">Canción: </p><span id="titleSong">${data.title}</span>
+            <p class="label-info">Artista: </p><span id="artistSong">${data.artist}</span>
+            <p>${message}</p>
+        `;
     } else {
         result.innerHTML = `<p>${message}</p>`;
     }
 
     result.style.display = 'block';
 }
+
 
