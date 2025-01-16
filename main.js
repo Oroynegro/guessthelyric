@@ -79,12 +79,10 @@ function showResult(message, isSuccess, data) {
     
     if (isSuccess) {
         result.innerHTML = `
-            <h3>¡Correcto! Letra verificada</h3>
-            <p>Canción: ${data.title}</p>
-            <p>Artista: ${data.artist}</p>
-            <p>Fuente: ${data.source}</p>
-            <h4>Estrofa:</h4>
-            <p style="font-style: italic; white-space: pre-line;">${data.stanza}</p>
+            <h3 class="lyricVerification">¡Correcto! Letra verificada</h3>
+            <p class="label-info">Canción: </p><span id="titleSong">${data.title}</span>
+            <p class="label-info">Artista: </p><span id="artistSong">${data.artist}</span>
+            <h4 class="label-info">Estrofa:</h4><span id="stanzaSong">${data.stanza}</span>
         `;
     } else {
         result.innerHTML = `<p>${message}</p>`;

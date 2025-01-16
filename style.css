@@ -4,6 +4,23 @@
     box-sizing: border-box;
     font-family: "Audiowide", serif;
 }
+.label-info{
+    font-size: 1.8em;
+    color: #ffffff;
+}
+.titleSong{
+    font-size: 1.8em;
+    color: #1db954;
+}
+.artistSong{
+    font-size: 1.8em;
+    color: #1db954;
+}
+.stanzaSong{
+    font-size: 1.8em;
+    color: #1db954;
+}
+
 body {
     background: #121212;
     color: white;
