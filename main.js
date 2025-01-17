@@ -73,10 +73,13 @@ function setManualWord() {
     }
 }
 
+// Asegúrate de agregar el evento `change` al `wordChoiceSelect` para actualizar el manejador de eventos.
 wordChoiceSelect.addEventListener('change', handleWordChoice);
 
+// Manejador que cambia el comportamiento del botón de inicio dependiendo de la opción seleccionada
 function handleWordChoice() {
     const choice = wordChoiceSelect.value;
+
     if (choice === 'manual') {
         manualWordInput.style.display = 'flex'; // Mostrar el input de palabra manual
         lyricsInput.style.display = 'none'; // Ocultar el input de letras
@@ -84,11 +87,26 @@ function handleWordChoice() {
         wordDisplay.textContent = 'Escribe una palabra';
         languageSelectContainer.style.display = 'none';
 
+        // Cambiar el manejador del botón a la función de escribir palabra
+        startButton.removeEventListener('click', generateRandomWord);
+        startButton.addEventListener('click', setManualWord);
     } else {
         manualWordInput.style.display = 'none'; // Ocultar el input de palabra manual
         languageSelectContainer.style.display = 'flex';
+
+        // Cambiar el manejador del botón a la función de generar palabra aleatoria
+        startButton.removeEventListener('click', setManualWord);
+        startButton.addEventListener('click', generateRandomWord);
     }
 }
+
+// Inicia el juego en función del modo seleccionado
+if (wordChoiceSelect.value === 'random') {
+    startButton.addEventListener('click', generateRandomWord);
+} else {
+    startButton.addEventListener('click', setManualWord);
+}
+
 
 async function checkLyrics() {
     const normalizeText = (text) =>
