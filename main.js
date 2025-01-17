@@ -75,7 +75,7 @@ wordChoiceSelect.addEventListener('change', handleWordChoice);
 function handleWordChoice() {
     const choice = wordChoiceSelect.value;
     if (choice === 'manual') {
-        manualWordInput.style.display = 'block'; // Mostrar el input de palabra manual
+        manualWordInput.style.display = 'flex'; // Mostrar el input de palabra manual
         lyricsInput.style.display = 'none'; // Ocultar el input de letras
         checkButton.style.display = 'none'; // Ocultar el botón de comprobar letra
         wordDisplay.textContent = 'Escribe una palabra';
@@ -83,7 +83,7 @@ function handleWordChoice() {
 
     } else {
         manualWordInput.style.display = 'none'; // Ocultar el input de palabra manual
-        languageSelectContainer.style.display = 'block';
+        languageSelectContainer.style.display = 'flex';
     }
 }
 
