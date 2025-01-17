@@ -124,14 +124,14 @@ async function checkLyrics() {
     const lyrics = normalizeText(lyricsInput.value.trim());
     
     if (lyrics.split(' ').length <= minWords.value-1) {
-        showResult(`Por favor ingresa al menos ${minWords.value} palabras`, false);
+        showResult(`Ingresa al menos ${minWords.value} palabras consecutivas`, false);
         return;
     }
 
     // Validación de la palabra en la letra
     const wordRegex = new RegExp(`\\b${currentWord}\\b`, 'i');
     if (!wordRegex.test(lyrics)) {
-        showResult(`La palabra "${currentWord}" no está presente correctamente en tu texto.`, false);
+        showResult(`La palabra "${currentWord}" no está presente en tu texto`, false);
         return;
     }
 
