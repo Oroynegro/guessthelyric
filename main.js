@@ -48,7 +48,7 @@ function generateRandomWord() {
 
     // Seleccionar una palabra aleatoria del array correspondiente
     currentWord = palabras[selectedLanguage][Math.floor(Math.random() * palabras[selectedLanguage].length)];
-    wordDisplay.textContent = `Palabra: ${currentWord}`;
+    wordDisplay.textContent = `${currentWord}`;
     lyricsInput.style.display = 'block';
     checkButton.style.display = 'block';
     startButton.style.display = 'none';
@@ -62,7 +62,7 @@ function setManualWord() {
     const manualWord = manualWordInputField.value.trim();
     if (manualWord) {
         currentWord = manualWord;
-        wordDisplay.textContent = `Palabra: ${currentWord}`;
+        wordDisplay.textContent = `${text.toUpperCase(currentWord)}`;
         lyricsInput.style.display = 'block';
         checkButton.style.display = 'block';
         gameConfig.style.display = 'none';

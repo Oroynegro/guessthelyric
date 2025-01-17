@@ -15,7 +15,7 @@ input {
 }
 button {
     padding: 10px 20px;
-    background: #1db954;
+    background: #1ed760;
     color: white;
     border: none;
     border-radius: 20px;
@@ -40,7 +40,7 @@ button:disabled {
     margin-bottom: 20px;
 }
 .game-config h2 {
-    color: #1db954;
+    color: #1ed760;
     margin-bottom: 20px;
     text-align: center;
 }
@@ -73,7 +73,7 @@ button:disabled {
 
 .titleSong{
     font-size: 1.8em;
-    color: #1db954;
+    color: #1ed760;
     text-align: center;
     margin-bottom: 20px;
 }
@@ -84,7 +84,7 @@ button:disabled {
 }
 .stanzaSong{
     font-size: 1.6em;
-    color: #1db954;
+    color: #1ed760;
 }
 
 body {
@@ -102,7 +102,7 @@ body {
 }
 
 .game-header h1 {
-    color: #1db954;
+    color: #1ed760;
     margin-bottom: 10px;
 }
 
@@ -118,6 +118,7 @@ body {
 }
 
 .word-display {
+    color: #1ed760;
     font-size: 24px;
     text-align: center;
     margin: 20px 0;
