@@ -1,18 +1,41 @@
-const palabras = ["más",'dormir','gustas'];
 const startButton = document.getElementById('startButton');
 const wordDisplay = document.getElementById('wordDisplay');
 const lyricsInput = document.getElementById('lyricsInput');
 const checkButton = document.getElementById('checkButton');
 const loading = document.getElementById('loading');
 const result = document.getElementById('result');
+const languageSelect = document.getElementById('languageSelect'); // Elemento de selección de idioma
 
 let currentWord = '';
+let palabras = { espanol: [], ingles: [] };  // Inicializamos un objeto para las palabras en ambos idiomas
+
+// Cargar las palabras desde el archivo JSON
+async function loadWords() {
+    try {
+        const response = await fetch('words.json'); // Ruta al archivo JSON
+        const data = await response.json();         // Convertir el archivo JSON en un objeto JavaScript
+        palabras = data;                            // Asignar las palabras a la variable
+    } catch (error) {
+        console.error('Error al cargar las palabras:', error);
+    }
+}
+
+// Llamar a loadWords cuando la página se haya cargado
+window.onload = loadWords;
 
 startButton.addEventListener('click', generateRandomWord);
 checkButton.addEventListener('click', checkLyrics);
 
 function generateRandomWord() {
-    currentWord = palabras[Math.floor(Math.random() * palabras.length)];
+    const selectedLanguage = languageSelect.value;  // Obtener el idioma seleccionado
+    
+    if (palabras[selectedLanguage].length === 0) {
+        wordDisplay.textContent = 'Cargando palabras...';
+        return;
+    }
+
+    // Seleccionar una palabra aleatoria del array correspondiente
+    currentWord = palabras[selectedLanguage][Math.floor(Math.random() * palabras[selectedLanguage].length)];
     wordDisplay.textContent = `Palabra: ${currentWord}`;
     lyricsInput.style.display = 'block';
     checkButton.style.display = 'block';
@@ -22,7 +45,6 @@ function generateRandomWord() {
 }
 
 async function checkLyrics() {
-    
     const normalizeText = (text) =>
         text.toLowerCase()
             .replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '') // Elimina puntuación
@@ -73,7 +95,6 @@ async function checkLyrics() {
             showResult('No se encontró una canción con esa letra exacta.', false);
         }
         
-        
     } catch (error) {
         console.error('Error:', error);
         showResult('Error al verificar la letra. Por favor, intenta nuevamente en unos momentos.', false);
@@ -119,7 +140,3 @@ function showResult(message, isSuccess, data) {
 
     result.style.display = 'flex';
 }
-
-
-
-
