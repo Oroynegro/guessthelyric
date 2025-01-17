@@ -44,7 +44,16 @@ button:disabled {
     margin-bottom: 20px;
     text-align: center;
 }
-
+.game-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: #282828;
+    padding: 20px;
+    padding-bottom: 50px;
+    border-radius: 10px;
+    text-align: center;
+}
 .config-options {
     display: flex;
     flex-direction: column;
