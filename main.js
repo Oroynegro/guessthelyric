@@ -64,7 +64,7 @@ function setManualWord() {
         result.style.display = 'none';
         manualWordInputField.value = ''; // Limpiar el input
         manualWordInput.style.display = 'none'; // Ocultar el input después de establecer la palabra
-        startButton.textContent = '¡Comenzar juego!';
+        startButton.style.display = 'none';
     } else {
         alert('Por favor ingresa una palabra.');
     }
@@ -80,6 +80,7 @@ function handleWordChoice() {
         checkButton.style.display = 'none'; // Ocultar el botón de comprobar letra
         wordDisplay.textContent = 'Escribe una palabra';
         languageSelectContainer.style.display = 'none';
+        startButton.textContent = '¡Comenzar juego!';
 
     } else {
         manualWordInput.style.display = 'none'; // Ocultar el input de palabra manual
