@@ -48,7 +48,7 @@ function generateRandomWord() {
 
     // Seleccionar una palabra aleatoria del array correspondiente
     currentWord = palabras[selectedLanguage][Math.floor(Math.random() * palabras[selectedLanguage].length)];
-    wordDisplay.textContent = `${currentWord}`;
+    wordDisplay.textContent = `${currentWord.toUpperCase()}`;
     lyricsInput.style.display = 'block';
     checkButton.style.display = 'block';
     startButton.style.display = 'none';
@@ -151,7 +151,7 @@ async function checkLyrics() {
             showResult('¡Correcto! Letra verificada.', true, data);
         } else if (data.exists && !data.verified) {
             showResult(
-                `Se encontró una posible coincidencia, pero no se pudo verificar la letra exacta.`,
+                `<p id="posible">Se encontró una posible coincidencia, pero no se pudo verificar la letra exacta.</p>`,
                 false,
                 data
             );
@@ -193,7 +193,6 @@ function showResult(message, isSuccess, data) {
         `;
     } else if (data && data.exists) {
         result.innerHTML = `
-            <h3 class="lyricVerification">Posible coincidencia encontrada</h3>
             <span class="titleSong">${data.title}</span>
             <span class="artistSong">${data.artist}</span>
             <p>${message}</p>

@@ -13,6 +13,7 @@ input {
     background: #fff;
     font-size: 1em;
 }
+
 button {
     padding: 10px 20px;
     background: #1ed760;
@@ -117,9 +118,12 @@ body {
     margin-bottom: 20px;
 }
 
+#posible{
+    color: #909090;
+}
 .word-display {
     color: #1ed760;
-    font-size: 24px;
+    font-size: 3em;
     text-align: center;
     margin: 20px 0;
     padding: 10px;
@@ -127,13 +131,15 @@ body {
 }
 
 textarea {
-    width: 100%;
+    resize: none; /* Evita que el textarea se pueda redimensionar */
     padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    min-height: 100px;
-    font-size: 16px;
+    border: none;
+    border-radius: 15px;
+    background: #fff;
+    font-size: 1em;
+    width: 100%;
+    margin-bottom: 20px;
+    min-height: 4em;
 }
 
 .result {
