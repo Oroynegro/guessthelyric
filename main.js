@@ -120,8 +120,8 @@ async function checkLyrics() {
 
     const lyrics = normalizeText(lyricsInput.value.trim());
     
-    if (lyrics.split(' ').length =< minWords.value) {
-        showResult('Por favor ingresa al menos 3 palabras', false);
+    if (lyrics.split(' ').length <= minWords.value) {
+        showResult(`Por favor ingresa al menos ${minWords.value} palabras`, false);
         return;
     }
 
