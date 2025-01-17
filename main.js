@@ -80,10 +80,10 @@ function handleWordChoice() {
         checkButton.style.display = 'none'; // Ocultar el botón de comprobar letra
         wordDisplay.textContent = 'Escribe una palabra';
         languageSelectContainer.style.display = 'none';
-        startButton.textContent = '¡Comenzar juego!';
 
     } else {
         manualWordInput.style.display = 'none'; // Ocultar el input de palabra manual
+        languageSelectContainer.style.display = 'block';
     }
 }
 
