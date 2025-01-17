@@ -10,7 +10,7 @@ const manualWordInput = document.getElementById('manualWordInput'); // Campo de 
 const manualWordInputField = document.getElementById('manualWord'); // Campo de texto para palabra manual
 const setWordButton = document.getElementById('setWordButton'); // Botón para establecer palabra manual
 const gameConfig = document.getElementById('gameConfig'); 
-const languageSelectContainer = document.getElementsByClassName('language-select');
+const languageSelectContainer = document.getElementById('languageSelectContainer');
 
 let currentWord = '';
 let palabras = { espanol: [], ingles: [] };  // Inicializamos un objeto para las palabras en ambos idiomas
