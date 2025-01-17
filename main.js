@@ -9,6 +9,8 @@ const wordChoiceSelect = document.getElementById('wordChoiceSelect'); // Element
 const manualWordInput = document.getElementById('manualWordInput'); // Campo de entrada de palabra manual
 const manualWordInputField = document.getElementById('manualWord'); // Campo de texto para palabra manual
 const setWordButton = document.getElementById('setWordButton'); // Botón para establecer palabra manual
+const gameConfig = document.getElementById('gameConfig'); 
+const languageSelectContainer = document.getElementsByClassName('language-select');
 
 let currentWord = '';
 let palabras = { espanol: [], ingles: [] };  // Inicializamos un objeto para las palabras en ambos idiomas
@@ -48,8 +50,7 @@ function generateRandomWord() {
     startButton.textContent = 'Nueva Palabra';
     result.style.display = 'none';
     lyricsInput.value = '';
-
-    console.log(currentWord)
+    gameConfig.style.display = 'none'
 }
 
 function setManualWord() {
@@ -63,7 +64,6 @@ function setManualWord() {
         result.style.display = 'none';
         manualWordInputField.value = ''; // Limpiar el input
         manualWordInput.style.display = 'none'; // Ocultar el input después de establecer la palabra
-        languageSelect.style.display = 'none';
     } else {
         alert('Por favor ingresa una palabra.');
     }
@@ -78,6 +78,7 @@ function handleWordChoice() {
         lyricsInput.style.display = 'none'; // Ocultar el input de letras
         checkButton.style.display = 'none'; // Ocultar el botón de comprobar letra
         wordDisplay.textContent = 'Escribe una palabra';
+        languageSelectContainer.style.display = 'none';
     } else {
         manualWordInput.style.display = 'none'; // Ocultar el input de palabra manual
     }

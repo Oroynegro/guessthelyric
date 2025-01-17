@@ -13,6 +13,16 @@ input {
     background: #fff;
     font-size: 1em;
 }
+button {
+    padding: 10px 20px;
+    background: #1db954;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1em;
+}
 .game-config {
     background: #282828;
     padding: 20px;
