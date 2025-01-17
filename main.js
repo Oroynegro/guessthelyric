@@ -8,9 +8,9 @@ const languageSelect = document.getElementById('languageSelect'); // Elemento de
 const wordChoiceSelect = document.getElementById('wordChoiceSelect'); // Elemento de selección de opción de palabra
 const manualWordInput = document.getElementById('manualWordInput'); // Campo de entrada de palabra manual
 const manualWordInputField = document.getElementById('manualWord'); // Campo de texto para palabra manual
-const setWordButton = document.getElementById('setWordButton'); // Botón para establecer palabra manual
 const gameConfig = document.getElementById('gameConfig'); 
 const languageSelectContainer = document.getElementById('languageSelectContainer');
+const gameArea = document.getElementById('gameArea');
 
 let currentWord = '';
 let palabras = { espanol: [], ingles: [] };  // Inicializamos un objeto para las palabras en ambos idiomas
@@ -29,9 +29,13 @@ async function loadWords() {
 // Llamar a loadWords cuando la página se haya cargado
 window.onload = loadWords;
 
-startButton.addEventListener('click', generateRandomWord);
+if (wordChoiceSelect.value === 'random'){
+    startButton.addEventListener('click', generateRandomWord);
+} else{
+    startButton.addEventListener('click', setManualWord);
+}
+
 checkButton.addEventListener('click', checkLyrics);
-setWordButton.addEventListener('click', setManualWord); // Establecer palabra manual
 
 function generateRandomWord() {
     
@@ -51,6 +55,7 @@ function generateRandomWord() {
     result.style.display = 'none';
     lyricsInput.value = '';
     gameConfig.style.display = 'none'
+    gameArea.style.display = 'flex'
 }
 
 function setManualWord() {
@@ -60,11 +65,9 @@ function setManualWord() {
         wordDisplay.textContent = `Palabra: ${currentWord}`;
         lyricsInput.style.display = 'block';
         checkButton.style.display = 'block';
-        startButton.textContent = 'Nueva Palabra';
-        result.style.display = 'none';
-        manualWordInputField.value = ''; // Limpiar el input
-        manualWordInput.style.display = 'none'; // Ocultar el input después de establecer la palabra
-        startButton.style.display = 'block';
+        gameConfig.style.display = 'none';
+        gameArea.style.display = 'flex'
+        
     } else {
         alert('Por favor ingresa una palabra.');
     }
