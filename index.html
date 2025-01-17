@@ -39,7 +39,7 @@
             <div id="gameConfig" class="game-config">
                 <h2>Configuración del Juego</h2>
                 <div class="config-options">
-                <div class="mode-select">
+                <div id="wordChoiceSelect>
                     <label for="wordChoiceSelect">Modo de Juego:</label>
                     <select id="wordChoiceSelect">
                         <option value="random">Generar Palabra Aleatoria</option>
@@ -52,6 +52,11 @@
                         <option value="espanol">Español</option>
                         <option value="ingles">Inglés</option>
                     </select>
+                </div>
+                <div id="minWordsContainer">
+                    <label for="minWords">Número de palabras:</label>
+                    <input id="minWords" type="number" min="3" max="100">3
+                    </input>
                 </div>
 
                 <div id="manualWordInput" style="display:none;">

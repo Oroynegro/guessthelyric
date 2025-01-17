@@ -11,6 +11,9 @@ const manualWordInputField = document.getElementById('manualWord'); // Campo de 
 const gameConfig = document.getElementById('gameConfig'); 
 const languageSelectContainer = document.getElementById('languageSelectContainer');
 const gameArea = document.getElementById('gameArea');
+const minWordsContainer = document.getElementById('minWordsContainer');
+const minWords = document.getElementById('minWords');
+
 
 let currentWord = '';
 let palabras = { espanol: [], ingles: [] };  // Inicializamos un objeto para las palabras en ambos idiomas
@@ -117,7 +120,7 @@ async function checkLyrics() {
 
     const lyrics = normalizeText(lyricsInput.value.trim());
     
-    if (lyrics.split(' ').length < 3) {
+    if (lyrics.split(' ').length =< minWords.value) {
         showResult('Por favor ingresa al menos 3 palabras', false);
         return;
     }
