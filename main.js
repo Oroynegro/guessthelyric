@@ -52,6 +52,7 @@ function generateRandomWord() {
     // Seleccionar una palabra aleatoria del array correspondiente
     currentWord = palabras[selectedLanguage][Math.floor(Math.random() * palabras[selectedLanguage].length)];
     wordDisplay.textContent = `${currentWord.toUpperCase()}`;
+    lyricsInput.placeholder = `Escribe la letra de la canción (mínimo ${minWords.value} palabras)`
     lyricsInput.style.display = 'block';
     checkButton.style.display = 'block';
     startButton.style.display = 'none';
@@ -66,10 +67,12 @@ function setManualWord() {
     if (manualWord) {
         currentWord = manualWord;
         wordDisplay.textContent = `${currentWord.toUpperCase()}`;
+        lyricsInput.placeholder = `Escribe la letra de la canción (mínimo ${minWords.value} palabras)`;
         lyricsInput.style.display = 'block';
         checkButton.style.display = 'block';
         gameConfig.style.display = 'none';
         gameArea.style.display = 'flex'
+        
         
     } else {
         alert('Por favor ingresa una palabra.');
