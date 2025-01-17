@@ -47,7 +47,7 @@ function generateRandomWord() {
     wordDisplay.textContent = `Palabra: ${currentWord}`;
     lyricsInput.style.display = 'block';
     checkButton.style.display = 'block';
-    startButton.textContent = 'Nueva Palabra';
+    startButton.style.display = 'none';
     result.style.display = 'none';
     lyricsInput.value = '';
     gameConfig.style.display = 'none'
@@ -64,6 +64,7 @@ function setManualWord() {
         result.style.display = 'none';
         manualWordInputField.value = ''; // Limpiar el input
         manualWordInput.style.display = 'none'; // Ocultar el input después de establecer la palabra
+        startButton.textContent = '¡Comenzar juego!';
     } else {
         alert('Por favor ingresa una palabra.');
     }
@@ -79,6 +80,7 @@ function handleWordChoice() {
         checkButton.style.display = 'none'; // Ocultar el botón de comprobar letra
         wordDisplay.textContent = 'Escribe una palabra';
         languageSelectContainer.style.display = 'none';
+
     } else {
         manualWordInput.style.display = 'none'; // Ocultar el input de palabra manual
     }
