@@ -39,6 +39,7 @@ button:disabled {
     border-radius: 10px;
     margin: 20px;
     padding: 20px;
+    min-width: 700px;
 }
 .game-config h2 {
     color: #1ed760;
@@ -92,8 +93,12 @@ button:disabled {
 }
 
 body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background: #121212;
     color: white;
+    overflow: auto; /* Permite el desplazamiento */
 }
 #title {
     font-size: 2em;
@@ -168,4 +173,12 @@ textarea {
     text-align: center;
     margin: 10px 0;
     color: #666;
+}
+@media (max-width: 600px) {
+    .game-container {
+        min-width: 0px;
+    }
+    .game-config {
+        min-width: 0px;
+    }
 }
