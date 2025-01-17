@@ -4,6 +4,16 @@
     box-sizing: border-box;
     font-family: "Audiowide", serif;
 }
+
+select,
+input {
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    background: #fff;
+    font-size: 1em;
+}
+
 .lyric-verification{
     font-size: 2em;
     text-align: center;

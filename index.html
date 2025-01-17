@@ -36,11 +36,20 @@
     <div class="container">
         
         <div class="game-section">
-            <button id="startButton">Comenzar Juego</button>
+            <select id="wordChoiceSelect">
+                <option value="random">Generar Palabra Aleatoria</option>
+                <option value="manual">Escribir Palabra</option>
+            </select>
+            
+            <div id="manualWordInput" style="display:none;">
+                <input type="text" id="manualWord" placeholder="Escribe tu palabra">
+                <button id="setWordButton">Establecer Palabra</button>
+            </div>
             <select id="languageSelect">
                 <option value="espanol">Español</option>
                 <option value="ingles">Inglés</option>
             </select>
+            <button id="startButton">Generar Palabra</button>
             <div id="wordDisplay" class="word-display"></div>
             <textarea id="lyricsInput" placeholder="Escribe aquí la letra de la canción (mínimo 3 palabras)..." style="display: none;"></textarea>
             <button id="checkButton" style="display: none;">Verificar Letra</button>

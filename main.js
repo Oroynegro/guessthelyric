@@ -5,6 +5,10 @@ const checkButton = document.getElementById('checkButton');
 const loading = document.getElementById('loading');
 const result = document.getElementById('result');
 const languageSelect = document.getElementById('languageSelect'); // Elemento de selección de idioma
+const wordChoiceSelect = document.getElementById('wordChoiceSelect'); // Elemento de selección de opción de palabra
+const manualWordInput = document.getElementById('manualWordInput'); // Campo de entrada de palabra manual
+const manualWordInputField = document.getElementById('manualWord'); // Campo de texto para palabra manual
+const setWordButton = document.getElementById('setWordButton'); // Botón para establecer palabra manual
 
 let currentWord = '';
 let palabras = { espanol: [], ingles: [] };  // Inicializamos un objeto para las palabras en ambos idiomas
@@ -25,6 +29,7 @@ window.onload = loadWords;
 
 startButton.addEventListener('click', generateRandomWord);
 checkButton.addEventListener('click', checkLyrics);
+setWordButton.addEventListener('click', setManualWord); // Establecer palabra manual
 
 function generateRandomWord() {
     const selectedLanguage = languageSelect.value;  // Obtener el idioma seleccionado
@@ -42,6 +47,36 @@ function generateRandomWord() {
     startButton.textContent = 'Nueva Palabra';
     result.style.display = 'none';
     lyricsInput.value = '';
+}
+
+function setManualWord() {
+    const manualWord = manualWordInputField.value.trim();
+    if (manualWord) {
+        currentWord = manualWord;
+        wordDisplay.textContent = `Palabra: ${currentWord}`;
+        lyricsInput.style.display = 'block';
+        checkButton.style.display = 'block';
+        startButton.textContent = 'Nueva Palabra';
+        result.style.display = 'none';
+        manualWordInputField.value = ''; // Limpiar el input
+        manualWordInput.style.display = 'none'; // Ocultar el input después de establecer la palabra
+    } else {
+        alert('Por favor ingresa una palabra.');
+    }
+}
+
+wordChoiceSelect.addEventListener('change', handleWordChoice);
+
+function handleWordChoice() {
+    const choice = wordChoiceSelect.value;
+    if (choice === 'manual') {
+        manualWordInput.style.display = 'block'; // Mostrar el input de palabra manual
+        lyricsInput.style.display = 'none'; // Ocultar el input de letras
+        checkButton.style.display = 'none'; // Ocultar el botón de comprobar letra
+        wordDisplay.textContent = 'Escribe una palabra';
+    } else {
+        manualWordInput.style.display = 'none'; // Ocultar el input de palabra manual
+    }
 }
 
 async function checkLyrics() {
