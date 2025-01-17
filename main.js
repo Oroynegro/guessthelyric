@@ -62,7 +62,7 @@ function setManualWord() {
     const manualWord = manualWordInputField.value.trim();
     if (manualWord) {
         currentWord = manualWord;
-        wordDisplay.textContent = `${text.toUpperCase(currentWord)}`;
+        wordDisplay.textContent = `${currentWord.toUpperCase()}`;
         lyricsInput.style.display = 'block';
         checkButton.style.display = 'block';
         gameConfig.style.display = 'none';
