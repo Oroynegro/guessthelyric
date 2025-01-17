@@ -36,20 +36,33 @@
     <div class="container">
         
         <div class="game-section">
-            <select id="wordChoiceSelect">
-                <option value="random">Generar Palabra Aleatoria</option>
-                <option value="manual">Escribir Palabra</option>
-            </select>
-            
-            <div id="manualWordInput" style="display:none;">
-                <input type="text" id="manualWord" placeholder="Escribe tu palabra">
-                <button id="setWordButton">Establecer Palabra</button>
+            <div id="gameConfig" class="game-config">
+                <h2>Configuración del Juego</h2>
+                <div class="config-options">
+                <div class="mode-select">
+                    <label for="wordChoiceSelect">Modo de Juego:</label>
+                    <select id="wordChoiceSelect">
+                        <option value="random">Generar Palabra Aleatoria</option>
+                        <option value="manual">Escribir Palabra</option>
+                    </select>
+                </div>
+                <div class="language-select">
+                    <label for="languageSelect">Idioma:</label>
+                    <select id="languageSelect">
+                        <option value="espanol">Español</option>
+                        <option value="ingles">Inglés</option>
+                    </select>
+                </div>
+
+                <div id="manualWordInput" style="display:none;">
+                    <input type="text" id="manualWord" placeholder="Escribe tu palabra">
+                    <button id="setWordButton">Establecer Palabra</button>
+                </div>
+                
+                <button id="startButton">Generar Palabra</button>
             </div>
-            <select id="languageSelect">
-                <option value="espanol">Español</option>
-                <option value="ingles">Inglés</option>
-            </select>
-            <button id="startButton">Generar Palabra</button>
+        </div>
+           
             <div id="wordDisplay" class="word-display"></div>
             <textarea id="lyricsInput" placeholder="Escribe aquí la letra de la canción (mínimo 3 palabras)..." style="display: none;"></textarea>
             <button id="checkButton" style="display: none;">Verificar Letra</button>

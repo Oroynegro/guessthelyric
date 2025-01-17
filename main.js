@@ -32,6 +32,7 @@ checkButton.addEventListener('click', checkLyrics);
 setWordButton.addEventListener('click', setManualWord); // Establecer palabra manual
 
 function generateRandomWord() {
+    
     const selectedLanguage = languageSelect.value;  // Obtener el idioma seleccionado
     
     if (palabras[selectedLanguage].length === 0) {
@@ -47,6 +48,8 @@ function generateRandomWord() {
     startButton.textContent = 'Nueva Palabra';
     result.style.display = 'none';
     lyricsInput.value = '';
+
+    console.log(currentWord)
 }
 
 function setManualWord() {
@@ -60,6 +63,7 @@ function setManualWord() {
         result.style.display = 'none';
         manualWordInputField.value = ''; // Limpiar el input
         manualWordInput.style.display = 'none'; // Ocultar el input después de establecer la palabra
+        languageSelect.style.display = 'none';
     } else {
         alert('Por favor ingresa una palabra.');
     }

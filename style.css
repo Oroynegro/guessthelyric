@@ -13,6 +13,29 @@ input {
     background: #fff;
     font-size: 1em;
 }
+.game-config {
+    background: #282828;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.game-config h2 {
+    color: #1db954;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.config-options {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.config-options > div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 
 .lyric-verification{
     font-size: 2em;
